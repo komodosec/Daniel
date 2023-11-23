@@ -1,0 +1,25 @@
+@echo off
+setlocal enabledelayedexpansion
+
+set "ip_list=192.168.1.1 192.168.1.2 192.168.1.3"  REM Add your IP addresses separated by space
+
+for %%i in (%ip_list%) do (
+    set "ip=%%i"
+    set "port=22"
+    set "result=Connection failed"
+
+    echo Testing !ip!:%port%...
+
+    (
+        echo open !ip! !port!
+        timeout /t 2 >nul
+    ) | telnet >nul 2>&1
+
+    if not errorlevel 1 (
+        set "result=Port !port! is open"
+    )
+
+    echo !result!
+)
+
+endlocal
